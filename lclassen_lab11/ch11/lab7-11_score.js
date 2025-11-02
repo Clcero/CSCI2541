@@ -101,6 +101,7 @@ var SnailBait = function () {
    // Score.............................................................
 
    this.scoreElement = document.getElementById('score'),
+   this.score = 0,
 
    // Sound and music...................................................
 
@@ -842,6 +843,34 @@ var SnailBait = function () {
    };
 
    this.collideBehavior = {
+      adjustScore: function (sprite) {
+         if (sprite.value) {
+            snailBait.score += sprite.value;
+            snailBait.updateScoreElement();
+         }
+      },
+
+      processAssetCollision: function (sprite) {
+         this.adjustScore(sprite);
+
+         if (sprite.type === 'ruby')
+            snailBait.scoreElement.style.color = 'blue';
+         else if (sprite.type === 'sapphire')
+            snailBait.scoreElement.style.color = 'red';
+         else if (sprite.type === 'coin')
+            snailBait.scoreElement.style.color = 'green';
+         else if (sprite.type === 'snail bomb') 
+            console.log("oof ouchies a snail bomb")
+         else if (sprite.type === 'bat') 
+            console.log("better get a rabies shot if that bat bit you")
+         else if (sprite.type === 'bee') 
+            console.log("how can i save the bees if they die when they sting me?")
+
+         setTimeout( function (e) {
+            snailBait.scoreElement.style.color = 'yellow';
+         }, 400);
+      },
+
       isCandidateForCollision: function (sprite, otherSprite) {
          var s, o;
          
@@ -899,8 +928,11 @@ var SnailBait = function () {
                   'sapphire' === otherSprite.type ||
                   'ruby' === otherSprite.type     || 
                   'snail bomb' === otherSprite.type ||
-                  'snail' === otherSprite.type) {
+                  'snail' === otherSprite.type ||
+                  'bat' === otherSprite.type ||
+                  'bee' === otherSprite.type) {
             otherSprite.visible = false;
+            this.processAssetCollision(otherSprite);
          }
 
          if ('bat' === otherSprite.type || 'bee' === otherSprite.type ||
@@ -928,6 +960,39 @@ var SnailBait = function () {
 };
 
 SnailBait.prototype = {
+   updateScoreElement: function () {
+      this.scoreElement.innerHTML = this.score;
+   },
+
+   setSpriteValues: function() {
+      var sprite,
+      COIN_VALUE = 100,
+      SAPPHIRE_VALUE = 500,
+      RUBY_VALUE = 1000;
+      SNAIL_VALUE = 1;
+
+      for (var i = 0; i< this.sprites.length; ++i) {
+         sprite = this.sprites[i];
+
+         if (sprite.type === 'coin') {
+            sprite.value = COIN_VALUE;
+            console.log("value now ", sprite.value)
+         }
+         if (sprite.type === 'ruby') {
+            sprite.value = RUBY_VALUE;
+            console.log("value now ", sprite.value)
+         }
+         if (sprite.type === 'sapphire') {
+            sprite.value = SAPPHIRE_VALUE;
+            console.log("value now ", sprite.value)
+         }
+         if (sprite.type === 'snail') {
+            sprite.value = SNAIL_VALUE;
+            console.log("value now ", sprite.value)
+         }
+      }
+   },
+
    createSprites: function () {
       this.createPlatformSprites(); 
 
@@ -945,6 +1010,7 @@ SnailBait.prototype = {
       // All sprites are also stored in a single array
 
       this.addSpritesToSpriteArray();
+      this.setSpriteValues();
    },
 
    addSpritesToSpriteArray: function () {
