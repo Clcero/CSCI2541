@@ -1153,7 +1153,7 @@ SnailBait.prototype = {
          bat.height = this.BAT_CELLS_HEIGHT;
 
          bat.collisionMargin = {
-            left: 6, top: 11, right: 4, bottom: 8,
+            left: 69, top: 1, right: 14, bottom: 25,
          };
 
          this.bats.push(bat);
@@ -1178,7 +1178,7 @@ SnailBait.prototype = {
          bee.height = this.BEE_CELLS_HEIGHT;
 
          bee.collisionMargin = {
-            left: 10, top: 10, right: 5, bottom: 10,
+            left: 1, top: 1, right: 1, bottom: 1,
          };
 
          this.bees.push(bee);
@@ -1315,10 +1315,10 @@ SnailBait.prototype = {
          ruby.value = 200;
 
          ruby.collisionMargin = {
-            left: ruby.width/5,
-            top: ruby.height/8,
+            left: 1,
+            top: 1,
             right: 0,
-            bottom: ruby.height/4
+            bottom: 1
          };
          
          this.rubies.push(ruby);
