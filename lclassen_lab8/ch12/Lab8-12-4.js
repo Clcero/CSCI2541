@@ -24,7 +24,7 @@ var SnailBait = function () {
 
    // Gravity...........................................................
 
-   this.GRAVITY_FORCE = 3.31; // m/s/s
+   this.GRAVITY_FORCE = 3.0; // m/s/s
 
    // Constants.........................................................
 
@@ -845,6 +845,7 @@ var SnailBait = function () {
          sprite.jumpApex = sprite.top;
          sprite.ascendTimer.stop(now);
          sprite.descendTimer.start(now);
+         snailBait.setTimeRate(snailBait.TIME_RATE_DURING_TRANSITIONS);
       },
 
       isDescending: function (sprite) {
@@ -868,8 +869,10 @@ var SnailBait = function () {
 
          if (snailBait.platformUnderneath(sprite)) {
             sprite.top = sprite.verticalLaunchPosition;
+            snailBait.setTimeRate(snailBait.NORMAL_TIME_RATE);
          }
          else {
+
             sprite.fall(snailBait.GRAVITY_FORCE *
                (sprite.descendTimer.getElapsedTime(now)/1000) *
                snailBait.PIXELS_PER_METER);
@@ -959,11 +962,14 @@ var SnailBait = function () {
             if ( ! sprite.jumping && 
                  ! snailBait.platformUnderneath(sprite)) {
                sprite.fall();
+               snailBait.setTimeRate(snailBait.TIME_RATE_DURING_TRANSITIONS);
+
             }
          }
          else { // falling
             if (this.isOutOfPlay(sprite) || sprite.exploding) {
                sprite.stopFalling();
+               snailBait.setTimeRate(snailBait.NORMAL_TIME_RATE);
 
                if (this.isOutOfPlay(sprite)) {
                   snailBait.loseLife();
@@ -971,6 +977,10 @@ var SnailBait = function () {
             }
             else { // not out of play or exploding
                this.moveDown(sprite, now, lastAnimationFrameTime);
+
+               if (!sprite.falling) {
+                  snailBait.setTimeRate(snailBait.NORMAL_TIME_RATE);
+               }
             }
          }
       }

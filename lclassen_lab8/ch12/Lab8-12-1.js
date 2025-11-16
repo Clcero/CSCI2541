@@ -1184,6 +1184,7 @@ SnailBait.prototype = {
          this.initialVelocityY = initialVelocity || 0;
          this.fallTimer.start(
             snailBait.timeSystem.calculateGameTime());
+         console.log(this.initialVelocityY);
       };
 
       this.runner.stopFalling = function () {
